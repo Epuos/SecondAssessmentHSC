@@ -1,4 +1,4 @@
-<h1 style="font-size: 50px"> FairShare </h1>
+<h1 style="font-size: 100px"> FairShare </h1>
 
 To install past below into terminal: <br>
 <code>pip install uuid customtkinter matplotlib pillow</code>
