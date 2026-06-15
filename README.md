@@ -2,19 +2,18 @@
 
 Firstly download the latest release from <a href="https://github.com/Epuos/SecondAssessmentHSC/tags">here</a>
 
-To install paste below into terminal: <br>
+To install past below into terminal: <br>
 <code>pip install uuid customtkinter matplotlib pillow</code>
-
-This can only run on MacOS, Windows and Linux
 
 # KNOWN PROBLEMS
 
 - When Opening new tabs, tkinter cannot multithread tasks, thus it might be unreactive.
     - To Solve this just click the tab on top (shown below in logging in)
-- Deleting tasks can be buggy, this again is because of the multithreading. You might just have to wait a little bit for it to process or just search around tabs
+- Deleting tasks can be buggy, this again is because of the multithreading. You might just have to wait a little bit for it to process or just search around to find the tab(s), then delete it by closing it.
 
 # Logging in
-First to Log in, enter your name into the entry box<br>
+First to Log in, enter your name into the entry box -> it will automatically make an account for you. The account is not case sensitve
+
 <img src="SS/Screenshot 2026-06-08 at 15.26.40.png" style = "width: 25%"><br>
 (You might need to click the browser heading in order to type, this is a tkinter threading error on their side) THIS APPLIES FOR EVEY NEW TAB OPEN<br>
 <img src="SS/Screenshot 2026-06-08 at 15.29.42.png" style = "width: 25%">
@@ -24,12 +23,14 @@ In the Dashboard, You will see this menu:
 
 <img src="SS/Screenshot 2026-06-08 at 15.37.47.png" style = "width: 50%">
 
+When opening tabs, you will not be able to access or use the main menu unless you close the alternative tab.
+
 ## Refreshing
 The Leaderboard or your tasks may update from time to time. To see changes, click refresh every so often to see changes.
 
 
 ## Adding a Task
-Right now you have not tasks and no contributions. It should look something like this
+Right now you have not tasks and no contributions. It should look something like this:
 
 <img src="SS/Screenshot 2026-06-08 at 15.37.12.png" style = "width: 25%">
 
@@ -79,7 +80,7 @@ In the login entry box, type:
 You will see an admin panel in additioin to your simple tasks.
 
 ## Admin commands 
-Since you are admin, you have a few extra commands at your disposal to regular other memebers.
+Since you are admin, you have a few extra commands at your disposal to regulate other memebers and view their actions.
 
 ### Adding tasks and contributions as Admin
 When Addings task and Contributions, you can now <b>Assign</b> them to other memebers. 
