@@ -1,7 +1,9 @@
 <h1 style="font-size: 100px"> FairShare </h1>
 
-To install past below into terminal: <br>
+To install paste below into terminal: <br>
 <code>pip install uuid customtkinter matplotlib pillow</code>
+
+This can only run on MacOS, Windows and Linux
 
 # KNOWN PROBLEMS
 
