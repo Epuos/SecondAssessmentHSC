@@ -1,5 +1,7 @@
 <h1 style="font-size: 100px"> FairShare </h1>
 
+Firstly download the latest release from <a href="https://github.com/Epuos/SecondAssessmentHSC/tags">here</a>
+
 To install paste below into terminal: <br>
 <code>pip install uuid customtkinter matplotlib pillow</code>
 
