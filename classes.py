@@ -1,41 +1,34 @@
-#import modules
-from datetime import datetime
-import uuid
+from datetime import datetime  # import datetime module
+import uuid                     # import uuid module
 
-#Member class
+
 class member:
-    #initializer, declare name, hours, lastLogin, isAdmin, contributions, tasks as attributes
-    def __init__(self, name, hours=0, lastLogin=None, isAdmin=False, contributions=None, tasks=None):
+    def __init__(self, name, hours=0, lastLogin=None, isAdmin=False, contributions=None, tasks=None):  # declare name, hours, lastLogin, isAdmin, contributions, tasks as attributes
         self.name = name
         self.hours = float(hours)
-        #if lastLogin is does not exist, set it to the time now
-        self.lastLogin = lastLogin if lastLogin else datetime.now().isoformat()
+        self.lastLogin = lastLogin if lastLogin else datetime.now().isoformat()  # if lastLogin does not exist, set it to the time now
         self.isAdmin = isAdmin
-        #if contributions or tasks are not provided, set them to an empty list
-        self.contributions = contributions if contributions is not None else []
-        self.tasks = tasks if tasks is not None else []
-    #add task method
-    def add_task(self, task):
-        #if the task is an instance of item, add it to the tasks list
-        if isinstance(task, item):#if instance exists 
-            self.tasks.append(task.dictafy())#make it into a dict
-        else: #if not, add it to the tasks list, by itself
-            self.tasks.append(task)
-#add contribution method
-    def add_contribution(self, contribution, task_uid=None):
-        #if the contribution is an instance of item, add it to the contributions list
-        if isinstance(contribution, item): #if instance exist
-            contribution_dict = contribution.dictafy()#make it into a dict
-            self.contributions.append(contribution_dict)#add the dict to the list
-            self.hours += float(contribution_dict.get("hours", 0))#get the hours from the dict and update hour attribute
-        else:
-            self.contributions.append(contribution)#add the contribution to the list
-            self.hours += float(contribution.get("hours", 0))#update the hours
-        #remove the original task by uid if provided
-        if task_uid:
-            self.tasks = [t for t in self.tasks if t.get("uid") != task_uid]
+        self.contributions = contributions if contributions is not None else []  # if contributions not provided, default to empty list
+        self.tasks = tasks if tasks is not None else []                          # if tasks not provided, default to empty list
 
-    def dictafy(self): #return the member's attributes as a dictionary
+    def add_task(self, task):                    # add task to tasks list
+        if isinstance(task, item):               # if task is an instance of item
+            self.tasks.append(task.dictafy())    # convert to dict and append
+        else:
+            self.tasks.append(task)              # otherwise append as-is
+
+    def add_contribution(self, contribution, task_uid=None):          # add contribution to contributions list
+        if isinstance(contribution, item):                            # if contribution is an instance of item
+            contribution_dict = contribution.dictafy()                # convert to dict
+            self.contributions.append(contribution_dict)              # append dict to list
+            self.hours += float(contribution_dict.get("hours", 0))    # update hours from dict
+        else:
+            self.contributions.append(contribution)                   # append contribution as-is
+            self.hours += float(contribution.get("hours", 0))         # update hours
+        if task_uid:                                                          # if task_uid provided
+            self.tasks = [t for t in self.tasks if t.get("uid") != task_uid]  # remove original task by uid
+
+    def dictafy(self):                                                        # return member attributes as a dictionary
         return {
             "name": self.name,
             "hours": self.hours,
@@ -45,58 +38,51 @@ class member:
             "tasks": self.tasks
         }
 
-    def vomit(self):
-        return self.dictafy()#return the dictionary as is
+    def vomit(self):                                                         # alias for dictafy
+        return self.dictafy()
 
-#Item class
+
 class item:
-    #initializer with name, user, submittedtime, hours, difficulty, comment as attributes
-    def __init__(self, name, user, submittedtime, hours=0, difficulty="e", comment="", uid=None):
+    def __init__(self, name, user, submittedtime, hours=0, difficulty="e", comment="", uid=None):# declare attributes
         self.name = name
         self.user = user
         self.submittedtime = submittedtime
         self.hours = float(hours)
         self.difficulty = difficulty.lower()
         self.comment = comment
-        if uid:
-            self.uid = uid
-        else:
-            self.uid = str(uuid.uuid4())  #generate a unique id if not provided
-#pointcalc method, sets a map for the multiplier based on difficulty priv method
-    def __pointcalculation(self):
+        self.uid = uid if uid else str(uuid.uuid4()) # use provided uid or generate a new one
+
+    def __pointcalculation(self):                    # private method, calculates score based on difficulty multiplier
         difficulty_map = {
             "e": 1,
             "m": 2,
             "h": 3
         }
-        #if the difficulty is not in the map, return 0
         try:
-            if self.difficulty not in difficulty_map:
-                return(0)
+            if self.difficulty not in difficulty_map:# if difficulty is invalid, return 0
+                return 0
         except Exception as e:
             print(e)
-            return (0)
-        #else, get the multiplier based on the difficulty
-        multiplier = difficulty_map[self.difficulty]
+            return 0
+
+        multiplier = difficulty_map[self.difficulty] # get multiplier from map
         bonus = 0
-        #if the comment is empty, subtract 30 from total scoer
-        if self.comment is None or self.comment.strip() == "":
+
+        if self.comment is None or self.comment.strip() == "":  # no comment penalty
             bonus -= 30
-        #if the hours are greater than 5, add 30 to total score and then multiply by 1.5
-        if self.hours > 5:
+        if self.hours > 5:                                      # high hours bonus
             bonus += 30 * self.hours * 1.5
-        #calculate the total score
-        base = self.hours * multiplier * 10
+
+        base = self.hours * multiplier * 10  # base score calculation
         total = int(base + bonus)
-        #returns the biggest score based on these calulations
-        return max(total, 0)
-    def _pointcalc(self):
+        return max(total, 0)                 # return highest possible score, minimum 0
+
+    def _pointcalc(self):                    # public wrapper for private __pointcalculation
         return item.__pointcalculation(self)
-#dictafy method
-    def dictafy(self):
-        #return the item's attributes as a dictionary
+
+    def dictafy(self):                       # return item attributes as a dictionary
         return {
-            "uid": self.uid,  #unique id for task removal
+            "uid": self.uid,                 # unique id used for task removal
             "name": self.name,
             "submittedtime": self.submittedtime,
             "hours": self.hours,
@@ -104,37 +90,35 @@ class item:
             "comment": self.comment
         }
 
-    @classmethod #classmethod for the from_dict method meaning that it is a static method that is based on class not instance
-    def from_dict(cls , data, user=""):#gets data and user, instead of self, its cls
-        return cls( #returns a new instance of the class
+    @classmethod
+    def from_dict(cls, data, user=""):                      # classmethod constructs instance from a dict instead of direct arugments
+        return cls(
             name=data.get("name", ""),
             user=user,
             submittedtime=data.get("submittedtime", ""),
             hours=data.get("hours", 0),
             difficulty=data.get("difficulty", "e"),
             comment=data.get("comment", ""),
-            uid=data.get("uid", None)  #preserve existing uid if present
+            uid=data.get("uid", None)                      # preserve existing uid if present
         )
 
-    def vomit(self):#returns the dictionary        
+    def vomit(self):                                       # alias for dictafy
         return self.dictafy()
 
-#Contributions class, this one is more of to hold the contributions as an temp obj that can be changed into a dict etc, instead of a static dict
-class contributions(item):
-    #initializer with name, user, submittedtime, hours, difficulty, comment as attributes
+
+class contributions(item):                                 # holds a contribution as a temp object, easier to convert than a static dict
     def __init__(self, name, user, submittedtime, hours, difficulty, comment):
         super().__init__(name, user, submittedtime, hours, difficulty, comment)
-    #vomit method, returns the dictionary as it
-    def vomit(self):
+
+    def vomit(self):                                       # alias for dictafy
         return self.dictafy()
 
-#admin class
-#REMOVE LATER MAYBE???? could just be in one class.
+
+                                                           #REMOVE LATER? could potentially be merged into member class
 class admin(member):
-    #initializer with name, hours, lastLogin, isadmin, contributions, tasks  
-    def __init__(self, name, hours=0, lastLogin=None, isadmin=True, contributions=None, tasks=None):
+    def __init__(self, name, hours=0, lastLogin=None, isadmin=True, contributions=None, tasks=None):  # isAdmin forced True via super
         super().__init__(name, hours, lastLogin, True, contributions, tasks)
         self.isadmin = isadmin
-    #override method, to give perms to change data etc
-    def __override(self):
+
+    def __override(self):  # grants permission to modify data
         return True
