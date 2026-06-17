@@ -1,17 +1,17 @@
-<h1 style="font-size: 100px"> FairShare </h1>
+<h1 style="font-size: 50px"> FairShare </h1>
 
-Firstly download the latest release from <a href="https://github.com/Epuos/SecondAssessmentHSC/releases">here</a> and unzip the file
-
-after that you can boot the unziped folder into vsc or python editor of your choice
-
-to install past below into terminal: <br>
+To install past below into terminal: <br>
 <code>pip install uuid customtkinter matplotlib pillow</code>
 
-# KNOWN PROBLEMS
+# KNOWN PROBLEMS/Troubleshooting
 
 - When Opening new tabs, tkinter cannot multithread tasks, thus it might be unreactive.
     - To Solve this just click the tab on top (shown below in logging in)
-- Deleting tasks can be buggy, this again is because of the multithreading. You might just have to wait a little bit for it to process or just search around to find the tab(s), then delete it by closing it.
+- Deleting tasks can be buggy, this again is because of the multithreading. 
+    - You might just have to wait a little bit for it to process OR
+    - just search around to find the tab(s), then delete it by closing it. 
+    - I should be behind the dashboard.
+- The dashboard is not interactive if another tab is open
 
 # Logging in
 First to Log in, enter your name into the entry box -> it will automatically make an account for you. The account is not case sensitve
